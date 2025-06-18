@@ -1,3 +1,18 @@
+##Explicacion del codigo "spark_inverted_index.py"##
+
+Importaciones: /
+
+Pyspark.sql
+json /
+
+Inicialización de Spark: /
+
+
+
+
+
+
+
 ## Explicación del archivo `spark_inverted_index.py`
 
 El archivo `spark_inverted_index.py` implementa un índice invertido utilizando Apache Spark, una herramienta poderosa para el procesamiento distribuido de grandes volúmenes de datos. Un índice invertido es una estructura de datos ampliamente utilizada en motores de búsqueda, que permite mapear cada palabra de un conjunto de documentos a la lista de documentos donde aparece.
