@@ -1,13 +1,78 @@
-##Explicacion del codigo "spark_inverted_index.py"##
 
-Importaciones: /
+# Explicación `spark_inverted_index.py`
 
-Pyspark.sql
-json /
+Este script crea un índice invertido utilizando Apache Spark a partir de archivos JSON. Un índice invertido asocia cada término (en este caso, tipos de objetos) con los documentos en los que aparece, facilitando búsquedas eficientes. A continuación, se detalla el funcionamiento del código:
 
-Inicialización de Spark: /
+---
 
+## 1. Importaciones y Definición Principal
 
+- **pyspark.sql:** Para manejar datos distribuidos.
+- **json:** Para procesar líneas de texto como objetos JSON.
+
+---
+
+## 2. Función `create_inverted_index`
+
+### Parámetros
+
+- `input_path`: Ruta de los archivos JSON de entrada.
+- `output_path`: Ruta donde guardar el índice invertido.
+
+### Proceso
+
+1. **Inicializa una SparkSession** optimizada para procesamiento distribuido.
+2. **Lee los archivos JSON** como texto plano, una línea por registro.
+3. **Procesa cada línea** mediante la función `process_json_line`:
+    - Intenta cargar la línea como JSON.
+    - Busca el `document_id` en la clave `meta` (omitiendo ciertos valores).
+    - Para cada objeto en `types`, extrae el tipo (`type`) y lo asocia con el documento.
+4. **Crea un DataFrame** con los pares (tipo de objeto, documento).
+5. **Agrupa por tipo de objeto** y junta los IDs de documentos asociados, ordenados y sin repetir.
+6. **Guarda el índice** en formato CSV (separado por tabulador).
+7. **Muestra estadísticas** como número de tipos únicos, pares totales y distribución de tipos.
+
+---
+
+## 3. Función `create_inverted_index_with_confidence`
+
+Versión extendida que considera un umbral de confianza (`confidence`):
+
+- Filtra los objetos por un valor mínimo de confianza.
+- Calcula estadísticas adicionales: confianza promedio por tipo y cantidad de instancias.
+- Guarda dos versiones del índice: una extendida (con estadísticas) y otra simple.
+
+---
+
+## 4. Función Principal (`main`)
+
+Permite ejecutar el script desde línea de comandos con los siguientes argumentos:
+
+- Ruta de entrada y salida.
+- Umbral de confianza.
+- Opción para incluir estadísticas adicionales.
+- Modo verbose.
+
+Escoge la función adecuada según los argumentos proporcionados.
+
+---
+
+## 5. Ejecución
+
+Al ejecutar el script, procesa los archivos JSON y genera el índice invertido en la ruta de salida, con o sin estadísticas según se indique.
+
+---
+
+## Resumen visual del flujo principal
+
+1. Lee archivos JSON línea por línea.
+2. Extrae para cada línea los pares (tipo de objeto, documento), opcionalmente filtrando por confianza.
+3. Agrupa los documentos por tipo de objeto.
+4. Guarda el índice invertido y muestra estadísticas útiles.
+
+---
+
+¿Te gustaría ver un ejemplo de entrada y salida para este script?
 
 
 
